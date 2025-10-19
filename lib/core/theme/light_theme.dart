@@ -22,6 +22,7 @@ ThemeData lightThemeData() {
       ),
       centerTitle: true,
       backgroundColor: Colors.white,
+      surfaceTintColor: Colors.white,
     ),
 
     elevatedButtonTheme: ElevatedButtonThemeData(
@@ -31,10 +32,28 @@ ThemeData lightThemeData() {
         fixedSize: const Size.fromHeight(52),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(11)),
         textStyle: const TextStyle(fontWeight: FontWeight.bold),
+        shadowColor: Colors.transparent,
       ),
     ),
 
     iconTheme: const IconThemeData(size: 50),
+
+    inputDecorationTheme: InputDecorationTheme(
+      fillColor: const Color(0xFFE7EEF4).withOpacity(.5),
+      filled: true,
+      hintStyle: TextStyle(color: const Color(0xFF41677F).withOpacity(0.5)),
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12),
+        borderSide: BorderSide.none,
+      ),
+    ),
+
+    tabBarTheme: const TabBarThemeData(
+      dividerColor: Colors.transparent,
+      indicatorColor: Colors.transparent,
+      overlayColor: WidgetStatePropertyAll(Colors.transparent)
+      
+    ),
 
     bottomNavigationBarTheme: const BottomNavigationBarThemeData(
       backgroundColor: Colors.white,
@@ -51,7 +70,7 @@ ThemeData lightThemeData() {
       showSelectedLabels: true,
       showUnselectedLabels: true,
       elevation: 0,
-      type: BottomNavigationBarType.fixed
+      type: BottomNavigationBarType.fixed,
     ),
   );
 }

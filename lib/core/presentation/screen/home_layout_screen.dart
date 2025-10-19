@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../features/bottom_navigation_bar/presentation/controller/bottom_nav_controller.dart';
 import '../../../features/bottom_navigation_bar/presentation/controller/bottom_nav_state.dart';
-import '../../../features/players_list/presentation/screen/kids_list_screen.dart';
+import '../../../features/players_list/presentation/screen/players_list_screen.dart';
 
 class HomeLayoutScreen extends StatelessWidget {
   const HomeLayoutScreen({super.key});
@@ -21,7 +21,7 @@ class HomeLayoutScreen extends StatelessWidget {
             controller: navController.pageController,
             onPageChanged: navController.onPageChanged,
             children: [
-              const KidsListScreen(),
+              const PlayersListScreen(),
               Container(
                 width: double.infinity,
                 height: double.infinity,
