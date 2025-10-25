@@ -38,10 +38,7 @@ class _PlayingStyleFormState extends State<PlayingStyleForm> {
       onPressed: () {
         widget.tabController.animateTo(tabIndex);
 
-        final container = ProviderScope.containerOf(context);
-        container
-            .read(playerProvider.notifier)
-            .changePlayingMethod(playingMethod);
+        ref.read(playerProvider.notifier).changePlayingMethod(playingMethod);
       },
       backgroundColor: selectedMethod == playingMethod
           ? null
