@@ -1,5 +1,4 @@
 import 'package:equatable/equatable.dart';
-
 import '../../../../core/enums/enums.dart';
 import 'player_photo.dart';
 
@@ -7,33 +6,48 @@ class PlayerEntity extends Equatable {
   const PlayerEntity({
     required this.name,
     required this.playerPhoto,
-    required this.playingStateMethod,
+    required this.playingMethod,
+    required this.playerState,
+    required this.cachedMoney,
+    required this.remainigTime,
   });
 
   factory PlayerEntity.empty() {
     return const PlayerEntity(
       name: '',
       playerPhoto: PlayerPhoto(photoSource: PlayerPhotoSource.asset),
-      playingStateMethod: PlayingMethod.money,
+      playingMethod: PlayingMethod.money,
+      cachedMoney: 0,
+      playerState: PlayerStatus.finished,
+      remainigTime: Duration.zero,
     );
   }
 
   final String name;
   final PlayerPhoto playerPhoto;
-  final PlayingMethod playingStateMethod;
+  final PlayingMethod playingMethod;
+  final PlayerStatus playerState;
+  final int cachedMoney;
+  final Duration remainigTime;
 
   PlayerEntity copyWith({
     String? name,
     PlayerPhoto? playerPhoto,
-    PlayingMethod? playingStateMethod,
+    PlayingMethod? playingMethod,
+    PlayerStatus? playerState,
+    int? cachedMoney,
+    Duration? remainigTime,
   }) {
     return PlayerEntity(
       name: name ?? this.name,
       playerPhoto: playerPhoto ?? this.playerPhoto,
-      playingStateMethod: playingStateMethod ?? this.playingStateMethod,
+      playingMethod: playingMethod ?? this.playingMethod,
+      playerState: playerState ?? this.playerState,
+      cachedMoney: cachedMoney ?? this.cachedMoney,
+      remainigTime: remainigTime ?? this.remainigTime,
     );
   }
 
   @override
-  List<Object?> get props => [name, playerPhoto, playingStateMethod];
+  List<Object?> get props => [name, playerPhoto];
 }

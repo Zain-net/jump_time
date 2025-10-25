@@ -25,10 +25,7 @@ class PlayingStyleForm extends StatefulWidget {
 
 class _PlayingStyleFormState extends State<PlayingStyleForm> {
   Widget _buildTab(PlayingMethod playingMethod, WidgetRef ref) {
-    final selectedMethod = ref
-        .watch(playerProvider)
-        .readyPlayer
-        .playingStateMethod;
+    final selectedMethod = ref.watch(playerProvider).readyPlayer.playingMethod;
 
     final tabIndex = playingMethod.index;
 

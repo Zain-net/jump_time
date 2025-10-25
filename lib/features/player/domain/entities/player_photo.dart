@@ -5,6 +5,10 @@ import '../../../../core/enums/enums.dart';
 class PlayerPhoto extends Equatable {
   const PlayerPhoto({this.path, required this.photoSource});
 
+  factory PlayerPhoto.asset() {
+    return const PlayerPhoto(photoSource: PlayerPhotoSource.asset);
+  }
+
   final String? path;
   final PlayerPhotoSource photoSource;
 

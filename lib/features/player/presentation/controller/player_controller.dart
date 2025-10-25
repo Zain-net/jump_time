@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/legacy.dart';
 
 import '../../../../core/enums/enums.dart';
+import '../../domain/entities/player_entity.dart';
 import '../../domain/entities/player_photo.dart';
 import 'player_state.dart';
 
@@ -8,10 +9,10 @@ class PlayerNotifier extends StateNotifier<PlayerState> {
   PlayerNotifier() : super(PlayerState.empty());
 
   void changePlayingMethod(PlayingMethod playingMethod) {
-    if (playingMethod == state.readyPlayer.playingStateMethod) return;
+    if (playingMethod == state.readyPlayer.playingMethod) return;
 
     final readyPlayer = state.readyPlayer.copyWith(
-      playingStateMethod: playingMethod,
+      playingMethod: playingMethod,
     );
 
     state = state.copyWith(readyPlayer: readyPlayer);
@@ -25,9 +26,9 @@ class PlayerNotifier extends StateNotifier<PlayerState> {
     state = state.copyWith(readyPlayer: readyPlayer);
   }
 
-  void addPlayer() {
+  void addPlayer(PlayerEntity player) {
     final copiedPlayers = {...state.players};
-    copiedPlayers.add(state.readyPlayer);
+    copiedPlayers.add(player);
 
     if (copiedPlayers.length == state.players.length) return;
 

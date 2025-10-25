@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/extensions/extensions.dart';
 import '../../../../core/presentation/widget/iconed_button.dart';
+import '../../domain/entities/player_entity.dart';
+import 'build_player_photo.dart';
 
 class PlayerCard extends StatelessWidget {
-  const PlayerCard({super.key});
+  const PlayerCard(this.playerEntity, {super.key});
+  final PlayerEntity playerEntity;
 
   @override
   Widget build(BuildContext context) {
@@ -18,14 +22,7 @@ class PlayerCard extends StatelessWidget {
           child: Stack(
             children: [
               Positioned.fill(
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(15),
-                  child: Image.asset(
-                    'assets/images/player_photo.png',
-
-                    fit: BoxFit.cover,
-                  ),
-                ),
+                child: BuildPlayerPhoto(playerEntity.playerPhoto),
               ),
               Positioned(
                 bottom: 15,
@@ -46,9 +43,19 @@ class PlayerCard extends StatelessWidget {
           ),
         ),
 
-        const PlayerRawInfo(label: 'الاسم', value: 'محمد سالم'),
-        const PlayerRawInfo(label: 'حالة اللاعب', value: 'يلعب'),
-        const PlayerRawInfo(label: 'الوقت المتبقي', value: '00:05:30'),
+        PlayerRawInfo(label: 'الاسم', value: playerEntity.name),
+        PlayerRawInfo(
+          label: 'حالة اللاعب',
+          value: playerEntity.playerState.status,
+        ),
+        Consumer(
+          builder: (context, ref, child) {
+            return PlayerRawInfo(
+              label: 'الوقت المتبقي',
+              value: playerEntity.remainigTime.format,
+            );
+          },
+        ),
       ],
     );
   }
