@@ -1,30 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../../features/add_player/presentation/screen/add_player_screen.dart';
 import '../../features/bottom_navigation_bar/presentation/controller/bottom_nav_controller.dart';
-import '../../features/players_list/presentation/screen/players_list_screen.dart';
+import '../../features/player/presentation/screen/add_player_screen.dart';
 import '../presentation/screen/home_layout_screen.dart';
 
-class Routes {
-  Routes._();
+class AppRoutes {
+  AppRoutes._();
 
-  static const home = '/';
-  static const playersList = '/playersList';
-  static const playerControl = '/playerControl';
-  static const extendTime = '/extendTime';
-  static const nextPlayers = '/nextPlayers';
-  static const dailyReport = '/dailyReport';
-  static const settings = '/settings';
-  static const addPlayer = '/appPlayer';
-
-  static Map<String, WidgetBuilder> routes = {
-    home: (_) => BlocProvider(
+  static Map<String, Widget Function(BuildContext)> routes = {
+    ViewRoute.home.routeName: (_) => BlocProvider(
       create: (context) => BottomNavCubit(),
       child: const HomeLayoutScreen(),
     ),
-    playersList: (_) => const PlayersListScreen(),
-    addPlayer: (_) => const AddPlayerScreen(),
-    
+    ViewRoute.addPlayer.routeName: (_) => const AddPlayerScreen(),
   };
+}
+
+enum ViewRoute {
+  home('/'),
+  playersList('/playersList'),
+  playerControl('/playerControl'),
+  extendTime('/extendTime'),
+  nextPlayers('/nextPlayers'),
+  dailyReport('/dailyReport'),
+  settings('/settings'),
+  addPlayer('/appPlayer');
+
+  const ViewRoute(this.routeName);
+  final String routeName;
 }

@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'core/routes/app_routes.dart';
 import 'core/theme/dark_theme.dart';
 import 'core/theme/light_theme.dart';
 
 void main() {
-  runApp(const MainApp());
+  runApp(const ProviderScope(child: MainApp()));
 }
 
 class MainApp extends StatelessWidget {
@@ -26,8 +27,8 @@ class MainApp extends StatelessWidget {
       theme: lightThemeData(),
       darkTheme: darkThemeData(),
       themeMode: ThemeMode.light, //TODO: Change Theme Mode to System
-      initialRoute: Routes.home,
-      routes: Routes.routes,
+      initialRoute: ViewRoute.home.name,
+      routes: AppRoutes.routes,
     );
   }
 }

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '../../../../core/presentation/widget/iconed_button.dart';
 import '../../../../core/routes/app_routes.dart';
 import '../widget/player_card.dart';
@@ -18,7 +17,8 @@ class PlayersListScreen extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           IconedButton(
-            onPressed: () => Navigator.pushNamed(context, Routes.addPlayer),
+            onPressed: () =>
+                Navigator.pushNamed(context, ViewRoute.addPlayer.routeName),
             icon: const Icon(Icons.add),
             label: 'أضف لاعب جديد',
           ),

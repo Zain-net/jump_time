@@ -46,13 +46,13 @@ ThemeData lightThemeData() {
         borderRadius: BorderRadius.circular(12),
         borderSide: BorderSide.none,
       ),
+      counterStyle: const TextStyle(fontSize: 0, color: Colors.transparent),
     ),
 
     tabBarTheme: const TabBarThemeData(
       dividerColor: Colors.transparent,
       indicatorColor: Colors.transparent,
-      overlayColor: WidgetStatePropertyAll(Colors.transparent)
-      
+      overlayColor: WidgetStatePropertyAll(Colors.transparent),
     ),
 
     bottomNavigationBarTheme: const BottomNavigationBarThemeData(
