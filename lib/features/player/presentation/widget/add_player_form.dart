@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/enums/enums.dart';
 import '../../../../core/extensions/extensions.dart';
+import '../../../../core/presentation/domain/id_generator.dart';
 import '../../../../core/presentation/widget/custom_form_field.dart';
 import '../../../../core/presentation/widget/iconed_button.dart';
 import '../../domain/entities/player_entity.dart';
@@ -83,6 +84,7 @@ class _AddPlayerFormState extends State<AddPlayerForm>
                     final readyPlayer = ref.read(playerProvider).readyPlayer;
 
                     final player = PlayerEntity(
+                      id: IdGenerator.nextId,
                       name: playerNameController.text,
                       playerPhoto: readyPlayer.playerPhoto,
                       playingMethod: readyPlayer.playingMethod,

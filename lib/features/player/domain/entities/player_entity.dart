@@ -4,6 +4,7 @@ import 'player_photo.dart';
 
 class PlayerEntity extends Equatable {
   const PlayerEntity({
+    required this.id,
     required this.name,
     required this.playerPhoto,
     required this.playingMethod,
@@ -15,6 +16,7 @@ class PlayerEntity extends Equatable {
   factory PlayerEntity.empty() {
     return const PlayerEntity(
       name: '',
+      id: 0,
       playerPhoto: PlayerPhoto(photoSource: PlayerPhotoSource.asset),
       playingMethod: PlayingMethod.money,
       cachedMoney: 0,
@@ -23,6 +25,7 @@ class PlayerEntity extends Equatable {
     );
   }
 
+  final int id;
   final String name;
   final PlayerPhoto playerPhoto;
   final PlayingMethod playingMethod;
@@ -31,6 +34,7 @@ class PlayerEntity extends Equatable {
   final Duration remainigTime;
 
   PlayerEntity copyWith({
+    int? id,
     String? name,
     PlayerPhoto? playerPhoto,
     PlayingMethod? playingMethod,
@@ -39,6 +43,7 @@ class PlayerEntity extends Equatable {
     Duration? remainigTime,
   }) {
     return PlayerEntity(
+      id: id ?? this.id,
       name: name ?? this.name,
       playerPhoto: playerPhoto ?? this.playerPhoto,
       playingMethod: playingMethod ?? this.playingMethod,
