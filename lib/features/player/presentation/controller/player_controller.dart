@@ -37,11 +37,11 @@ class PlayerNotifier extends StateNotifier<PlayerState> {
     if (copiedPlayers.length == state.players.length) return;
 
     state = state.copyWith(players: copiedPlayers);
-    
+
   }
 
   void startPlaying(PlayerEntity player, int tenMinutesPrice) {
-    final minutePrice = tenMinutesPrice / 10;
+    // final minutePrice = tenMinutesPrice / 10;
     playerTimer.read(playerTimerProvider.notifier).startTimer(player.id);
   }
 }

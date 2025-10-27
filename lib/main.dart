@@ -4,16 +4,19 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'core/routes/app_routes.dart';
 import 'core/theme/dark_theme.dart';
 import 'core/theme/light_theme.dart';
+import 'features/theme_mode/presentation/controller/theme_controller.dart';
 
 void main() {
+
   runApp(const ProviderScope(child: MainApp()));
 }
 
-class MainApp extends StatelessWidget {
+class MainApp extends ConsumerWidget {
   const MainApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, ref) {
+    
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Jump Time',
@@ -26,7 +29,7 @@ class MainApp extends StatelessWidget {
       ],
       theme: lightThemeData(),
       darkTheme: darkThemeData(),
-      themeMode: ThemeMode.light, //TODO: Change Theme Mode to System
+      themeMode: ref.watch(themeProvider),
       initialRoute: ViewRoute.home.name,
       routes: AppRoutes.routes,
     );

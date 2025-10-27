@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../features/bottom_navigation_bar/presentation/controller/bottom_nav_controller.dart';
-import '../../../features/bottom_navigation_bar/presentation/controller/bottom_nav_state.dart';
 import '../../../features/player/presentation/screen/players_list_screen.dart';
 
 class HomeLayoutScreen extends StatelessWidget {
@@ -10,16 +8,14 @@ class HomeLayoutScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final navController = context.read<BottomNavCubit>();
-    return BlocSelector<BottomNavCubit, BottomNavState, int>(
-      selector: (state) => state.currentIndex,
-
-      builder: (context, index) {
-        return Scaffold(
-          appBar: AppBar(title: const Center(child: Text('وقت التنطيط'))),
-          body: PageView(
-            controller: navController.pageController,
-            onPageChanged: navController.onPageChanged,
+    return Scaffold(
+      appBar: AppBar(title: const Center(child: Text('وقت التنطيط'))),
+      body: Consumer(
+        builder: (context, ref, child) {
+          final controller = ref.read(bottomNavProvider.notifier);
+          return PageView(
+            controller: controller.pageController,
+            onPageChanged: controller.onPageChanged,
             children: [
               const PlayersListScreen(),
               Container(
@@ -41,17 +37,25 @@ class HomeLayoutScreen extends StatelessWidget {
                 child: const Center(child: Text('الإعدادات')),
               ),
             ],
-          ),
-          bottomNavigationBar: Theme(
-            data: Theme.of(context).copyWith(
-              splashColor: Colors.transparent,
-              highlightColor: Colors.transparent,
-            ),
-            child: Padding(
-              padding: const EdgeInsets.only(top: 5, bottom: 25),
-              child: BottomNavigationBar(
-                currentIndex: index,
-                onTap: navController.changeIndex,
+          );
+        },
+      ),
+      bottomNavigationBar: Theme(
+        data: Theme.of(context).copyWith(
+          splashColor: Colors.transparent,
+          highlightColor: Colors.transparent,
+        ),
+        child: Padding(
+          padding: const EdgeInsets.only(top: 5, bottom: 25),
+          child: Consumer(
+            builder: (context, ref, child) {
+              final controller = ref.read(bottomNavProvider.notifier);
+              final currentIndex = ref.watch(bottomNavProvider);
+
+              return BottomNavigationBar(
+                currentIndex: currentIndex,
+                onTap: controller.changeIndex,
+                
                 items: const [
                   BottomNavigationBarItem(
                     icon: Icon(Icons.sports_gymnastics_outlined),
@@ -74,11 +78,11 @@ class HomeLayoutScreen extends StatelessWidget {
                     label: 'الإعدادات',
                   ),
                 ],
-              ),
-            ),
+              );
+            },
           ),
-        );
-      },
+        ),
+      ),
     );
   }
 }
