@@ -9,8 +9,8 @@ class PlayerEntity extends Equatable {
     required this.playerPhoto,
     required this.playingMethod,
     required this.playerState,
-    required this.cachedMoney,
-    required this.remainigTime,
+     this.playingPrice,
+     this.remainigTime,
   });
 
   factory PlayerEntity.empty() {
@@ -19,9 +19,7 @@ class PlayerEntity extends Equatable {
       id: 0,
       playerPhoto: PlayerPhoto(photoSource: PlayerPhotoSource.asset),
       playingMethod: PlayingMethod.money,
-      cachedMoney: 0,
       playerState: PlayerStatus.finished,
-      remainigTime: Duration.zero,
     );
   }
 
@@ -30,8 +28,8 @@ class PlayerEntity extends Equatable {
   final PlayerPhoto playerPhoto;
   final PlayingMethod playingMethod;
   final PlayerStatus playerState;
-  final int cachedMoney;
-  final Duration remainigTime;
+  final int? playingPrice;
+  final Duration? remainigTime;
 
   PlayerEntity copyWith({
     int? id,
@@ -39,7 +37,7 @@ class PlayerEntity extends Equatable {
     PlayerPhoto? playerPhoto,
     PlayingMethod? playingMethod,
     PlayerStatus? playerState,
-    int? cachedMoney,
+    int? playingPrice,
     Duration? remainigTime,
   }) {
     return PlayerEntity(
@@ -48,11 +46,11 @@ class PlayerEntity extends Equatable {
       playerPhoto: playerPhoto ?? this.playerPhoto,
       playingMethod: playingMethod ?? this.playingMethod,
       playerState: playerState ?? this.playerState,
-      cachedMoney: cachedMoney ?? this.cachedMoney,
+      playingPrice: playingPrice ?? this.playingPrice,
       remainigTime: remainigTime ?? this.remainigTime,
     );
   }
 
   @override
-  List<Object?> get props => [name, playerPhoto];
+  List<Object?> get props => [id,name, playerPhoto];
 }

@@ -2,41 +2,68 @@ import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/legacy.dart';
 
+import '../../../../core/enums/enums.dart';
+import '../../../player/domain/entities/player_entity.dart';
 import '../../../player/presentation/controller/player_controller.dart';
 
 class PlayerTimerNotifier extends StateNotifier<Map<int, Timer>> {
-  PlayerTimerNotifier(this.playerRef) : super({});
+  PlayerTimerNotifier(this.ref) : super({});
 
-  final Ref playerRef;
+  final Ref ref;
 
-  void startTimer(int playerId) {
-    final playersTimers = {...state};
-    final players = playerRef.read(playerProvider).players;
+  void startTimer(PlayerEntity player) {
+    // إذا كان اللاعب لديه تايمر بالفعل، لا تنشئ واحد جديد
+    if (state.containsKey(player.id)) return;
 
-    playersTimers[playerId] = Timer.periodic(const Duration(seconds: 1), (
-      timer,
-    ) {
-      final player = players.firstWhere((p) => p.id == playerId);
-      players.remove(player);
+    final timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      final players = ref.read(playerProvider).players;
 
-      if (player.remainigTime.inSeconds <= 0) return timer.cancel();
-
-      final updatedPlayer = player.copyWith(
-        remainigTime: _decreaseSecond(player.remainigTime),
+      final currentPlayer = players.firstWhere(
+        (p) => p.id == player.id,
+        orElse: () => player,
       );
 
-      players.add(updatedPlayer);
+      final remainig = currentPlayer.remainigTime;
+      if (remainig != null && remainig.inSeconds <= 0) {
+        stopTimer(player.id);
+        return;
+      }
 
-      state = playersTimers;
+      final updatedPlayer = switch (currentPlayer.playingMethod) {
+        PlayingMethod.time => currentPlayer.copyWith(
+          remainigTime: _decreaseSecond(currentPlayer.remainigTime!),
+        ),
+        PlayingMethod.money => currentPlayer,
+        PlayingMethod.unlimited => currentPlayer.copyWith(
+          remainigTime: _increaseSecond(currentPlayer.remainigTime!),
+        ),
+      };
+
+      ref.read(playerProvider.notifier).addPlayer(updatedPlayer);
     });
+
+    state = {...state, player.id: timer};
   }
 
   Duration _decreaseSecond(Duration duration) {
     return Duration(seconds: duration.inSeconds - 1);
   }
+
+  Duration _increaseSecond(Duration duration) {
+    return Duration(seconds: duration.inSeconds + 1);
+  }
+
+  void stopTimer(int playerId) {
+    final copiedTimers = {...state};
+    copiedTimers[playerId]?.cancel();
+
+    copiedTimers.remove(playerId);
+
+    state = copiedTimers;
+  }
 }
 
 final playerTimerProvider =
-    StateNotifierProvider<PlayerTimerNotifier, Map<int, Timer>>((ref) {
-      return PlayerTimerNotifier(ref);
-    });
+    StateNotifierProvider<PlayerTimerNotifier, Map<int, Timer>>(
+      PlayerTimerNotifier.new,
+    );

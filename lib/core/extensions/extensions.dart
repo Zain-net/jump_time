@@ -5,7 +5,7 @@ extension Themes on BuildContext {
 }
 
 extension Numbers on String {
-  int get toInt => int.tryParse(this) ?? 0;
+  int? get toInt => int.tryParse(this);
 }
 
 extension DurationFormat on Duration {

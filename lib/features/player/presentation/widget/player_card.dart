@@ -52,7 +52,7 @@ class PlayerCard extends StatelessWidget {
           builder: (context, ref, child) {
             return PlayerRawInfo(
               label: 'الوقت المتبقي',
-              value: playerEntity.remainigTime.format,
+              value: playerEntity.remainigTime?.format?? '00:00:00',
             );
           },
         ),

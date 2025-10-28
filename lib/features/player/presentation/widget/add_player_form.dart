@@ -83,19 +83,23 @@ class _AddPlayerFormState extends State<AddPlayerForm>
 
                     final readyPlayer = ref.read(playerProvider).readyPlayer;
 
+                    final remainigMinutes = playingTimeController.text.toInt;
+                    final remainigTime = remainigMinutes != null
+                        ? Duration(minutes: remainigMinutes)
+                        : null;
+
                     final player = PlayerEntity(
                       id: IdGenerator.nextId,
                       name: playerNameController.text,
                       playerPhoto: readyPlayer.playerPhoto,
                       playingMethod: readyPlayer.playingMethod,
                       playerState: readyPlayer.playerState,
-                      cachedMoney: playingMoneyController.text.toInt,
-                      remainigTime: Duration(
-                        minutes: playingTimeController.text.toInt,
-                      ),
+                      playingPrice: playingMoneyController.text.toInt,
+                      remainigTime: remainigTime,
                     );
 
                     controller.addPlayer(player);
+                    controller.startPlaying(player);
                   },
                 );
               },
