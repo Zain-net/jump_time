@@ -23,6 +23,7 @@ ThemeData lightThemeData() {
       centerTitle: true,
       backgroundColor: Colors.white,
       surfaceTintColor: Colors.white,
+      actionsPadding: EdgeInsets.symmetric(horizontal: 11)
     ),
 
     elevatedButtonTheme: ElevatedButtonThemeData(
@@ -37,6 +38,7 @@ ThemeData lightThemeData() {
     ),
 
     iconTheme: const IconThemeData(size: 50),
+
 
     inputDecorationTheme: InputDecorationTheme(
       fillColor: const Color(0xFFE7EEF4).withOpacity(.5),

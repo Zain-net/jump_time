@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/enums/enums.dart';
 import '../../../../core/presentation/widget/custom_form_field.dart';
-import '../../../../core/presentation/widget/iconed_button.dart';
-import '../controller/player_controller.dart';
+import '../validators/validators.dart';
+import 'custom_tab.dart';
 
 class PlayingStyleForm extends StatefulWidget {
   const PlayingStyleForm({
@@ -24,32 +24,7 @@ class PlayingStyleForm extends StatefulWidget {
 }
 
 class _PlayingStyleFormState extends State<PlayingStyleForm> {
-  Widget _buildTab(PlayingMethod playingMethod, WidgetRef ref) {
-    final selectedMethod = ref.watch(playerProvider).readyPlayer.playingMethod;
-
-    final tabIndex = playingMethod.index;
-
-    return IconedButton(
-      label: playingMethod.label,
-      icon: playingMethod.icon,
-      onPressed: () {
-        widget.tabController.animateTo(tabIndex);
-
-        ref.read(playerProvider.notifier).changePlayingMethod(playingMethod);
-      },
-      backgroundColor: selectedMethod == playingMethod
-          ? null
-          : const Color(0xFFE7EEF4).withOpacity(.5),
-      foregroundColor: selectedMethod == playingMethod
-          ? null
-          : const Color(0xFF41677F).withOpacity(0.5),
-    );
-  }
-
-  List<Widget> _buildTabs(WidgetRef ref) {
-    final tabs = PlayingMethod.values.map((t) => _buildTab(t, ref)).toList();
-    return tabs;
-  }
+  int get currentTab => widget.tabController.index;
 
   @override
   Widget build(BuildContext context) {
@@ -58,11 +33,20 @@ class _PlayingStyleFormState extends State<PlayingStyleForm> {
       spacing: 30,
       children: [
         Consumer(
-          builder: (context, ref, _) {
+          builder: (_, ref, __) {
+            final tabs = PlayingMethod.values
+                .map(
+                  (method) => CustomTab(
+                    playingMethod: method,
+                    tabController: widget.tabController,
+                  ),
+                )
+                .toList();
+
             return Row(
               spacing: 10,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: _buildTabs(ref),
+              children: tabs,
             );
           },
         ),
@@ -84,26 +68,8 @@ class _PlayingStyleFormState extends State<PlayingStyleForm> {
                       maxLength: 4,
                       textInputType: const TextInputType.numberWithOptions(),
 
-                      validator: (value) {
-                        final isSelected =
-                            widget.tabController.index ==
-                            PlayingMethod.money.index;
-                        if (!isSelected) return null;
-
-                        final isEmpty = value?.isEmpty ?? true;
-                        if (isEmpty) return 'يجب إدخال مبلغ اللعب أولا';
-
-                        final digits = RegExp(r'^[0-9]+$');
-                        if (!digits.hasMatch(value!)) {
-                          return 'الرجاء إدخال أرقام موجبة فقط';
-                        }
-
-                        if (int.parse(value) > 5000) {
-                          return 'لا يمكن إدخال مبلغ أكثر من 5000 ريال';
-                        }
-
-                        return null;
-                      },
+                      validator: (value) =>
+                          playingMoneyValidator(value, currentTab),
                     ),
                   ),
                   const Text('ريال'),
@@ -120,26 +86,8 @@ class _PlayingStyleFormState extends State<PlayingStyleForm> {
                       helperText: 'اقصى دقائق هي 90 دقيقة',
                       maxLength: 2,
                       textInputType: const TextInputType.numberWithOptions(),
-                      validator: (value) {
-                        final isSelected =
-                            widget.tabController.index ==
-                            PlayingMethod.time.index;
-                        if (!isSelected) return null;
-
-                        final isEmpty = value?.isEmpty ?? true;
-                        if (isEmpty) return 'يجب إدخال زمن اللعب أولا';
-
-                        final digits = RegExp(r'^[0-9]+$');
-                        if (!digits.hasMatch(value!)) {
-                          return 'الرجاء إدخال أرقام موجبة فقط';
-                        }
-
-                        if (int.parse(value) > 90) {
-                          return 'لايمكن أن تزيد الدقائق عن 90 دقيقة';
-                        }
-
-                        return null;
-                      },
+                      validator: (value) =>
+                          playingTimeValidator(value, currentTab),
                     ),
                   ),
                   const Text('دقائق'),

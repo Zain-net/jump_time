@@ -4,11 +4,17 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/extensions/extensions.dart';
 import '../../../../core/presentation/widget/iconed_button.dart';
 import '../../domain/entities/player_entity.dart';
+import '../controller/player_controller.dart';
 import 'build_player_photo.dart';
 
 class PlayerCard extends StatelessWidget {
-  const PlayerCard(this.playerEntity, {super.key});
+  const PlayerCard({
+    super.key,
+    required this.index,
+    required this.playerEntity,
+  });
   final PlayerEntity playerEntity;
+  final int index;
 
   @override
   Widget build(BuildContext context) {
@@ -44,15 +50,29 @@ class PlayerCard extends StatelessWidget {
         ),
 
         PlayerRawInfo(label: 'الاسم', value: playerEntity.name),
-        PlayerRawInfo(
-          label: 'حالة اللاعب',
-          value: playerEntity.playerState.status,
+        Consumer(
+          builder: (_, ref, __) {
+            final playerStatus = ref.watch(
+              playerProvider.select(
+                (state) => state.players.elementAt(index).playerStatus,
+              ),
+            );
+            return PlayerRawInfo(
+              label: 'حالة اللاعب',
+              value: playerStatus.status,
+            );
+          },
         ),
         Consumer(
-          builder: (context, ref, child) {
+          builder: (_, ref, __) {
+            final remainigTime = ref.watch(
+              playerProvider.select(
+                (state) => state.players.elementAt(index).remainigTime,
+              ),
+            );
             return PlayerRawInfo(
               label: 'الوقت المتبقي',
-              value: playerEntity.remainigTime?.format?? '00:00:00',
+              value: remainigTime?.format ?? '00:00:00',
             );
           },
         ),

@@ -7,6 +7,7 @@ import '../../../../core/presentation/widget/custom_form_field.dart';
 import '../../../../core/presentation/widget/iconed_button.dart';
 import '../../domain/entities/player_entity.dart';
 import '../controller/player_controller.dart';
+import 'keep_screen_switch.dart';
 import 'playing_style_form.dart';
 
 class AddPlayerForm extends StatefulWidget {
@@ -44,12 +45,45 @@ class _AddPlayerFormState extends State<AddPlayerForm>
     super.dispose();
   }
 
+  void _submitForm(WidgetRef ref) {
+    final controller = ref.read(playerProvider.notifier);
+
+    final isValidForm = formKey.currentState?.validate() ?? false;
+
+    if (!isValidForm) return;
+
+    final readyPlayer = ref.read(playerProvider).readyPlayer;
+
+    final remainigMinutes = playingTimeController.text.toInt;
+    final remainigTime = remainigMinutes != null
+        ? Duration(minutes: remainigMinutes)
+        : null;
+
+    final player = PlayerEntity(
+      id: IdGenerator.nextId,
+      name: playerNameController.text,
+      playerPhoto: readyPlayer.playerPhoto,
+      playingMethod: readyPlayer.playingMethod,
+      playerStatus: readyPlayer.playerStatus,
+      playingPrice: playingMoneyController.text.toInt,
+      remainigTime: remainigTime,
+    );
+
+    controller.addPlayer(player);
+    controller.startPlaying(player);
+
+    final isKeepScreenOn = ref.read(keepScreenProvider);
+    if (isKeepScreenOn) return;
+
+    Navigator.of(context).pop();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Form(
       key: formKey,
       child: Column(
-        spacing: 30,
+        spacing: 10,
         children: [
           CustomFormField(
             controller: playerNameController,
@@ -67,40 +101,16 @@ class _AddPlayerFormState extends State<AddPlayerForm>
             tabController: tabController,
           ),
 
+          const SizedBox(height: 20),
+
           SizedBox(
             width: double.infinity,
             child: Consumer(
               builder: (context, ref, child) {
-                final controller = ref.read(playerProvider.notifier);
                 return IconedButton(
                   label: 'ابدأ اللعب',
                   icon: const Icon(Icons.play_arrow),
-                  onPressed: () {
-                    final isValidForm =
-                        formKey.currentState?.validate() ?? false;
-
-                    if (!isValidForm) return;
-
-                    final readyPlayer = ref.read(playerProvider).readyPlayer;
-
-                    final remainigMinutes = playingTimeController.text.toInt;
-                    final remainigTime = remainigMinutes != null
-                        ? Duration(minutes: remainigMinutes)
-                        : null;
-
-                    final player = PlayerEntity(
-                      id: IdGenerator.nextId,
-                      name: playerNameController.text,
-                      playerPhoto: readyPlayer.playerPhoto,
-                      playingMethod: readyPlayer.playingMethod,
-                      playerState: readyPlayer.playerState,
-                      playingPrice: playingMoneyController.text.toInt,
-                      remainigTime: remainigTime,
-                    );
-
-                    controller.addPlayer(player);
-                    controller.startPlaying(player);
-                  },
+                  onPressed: () => _submitForm(ref),
                 );
               },
             ),

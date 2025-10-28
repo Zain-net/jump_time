@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../widget/add_player_form.dart';
+import '../widget/keep_screen_switch.dart';
 import '../widget/player_photo_controller.dart';
 
 class AddPlayerScreen extends StatelessWidget {
@@ -8,7 +9,10 @@ class AddPlayerScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('إضافة لاعب')),
+      appBar: AppBar(
+        title: const Text('إضافة لاعب'),
+        actions: const [KeepScreenSwitch()],
+      ),
       body: ListView(
         padding: const EdgeInsets.all(24),
         children: const [
