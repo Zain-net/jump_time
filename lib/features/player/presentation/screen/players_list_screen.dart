@@ -25,17 +25,19 @@ class PlayersListScreen extends ConsumerWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           const AddPlayerButton(),
-          ListView.separated(
-            itemBuilder: (_, index) {
-              final player = playersList.elementAt(index);
-              return PlayerCard(
-                key: ValueKey('${player.id}: ${player.name}'),
-                playerEntity: player,
-                index: index,
-              );
-            },
-            separatorBuilder: (_, _) => const SizedBox(height: 30,),
-            itemCount: playersList.length,
+          Expanded(
+            child: ListView.separated(
+              itemBuilder: (_, index) {
+                final player = playersList.elementAt(index);
+                return PlayerCard(
+                  key: ValueKey('${player.id}: ${player.name}'),
+                  playerEntity: player,
+                  index: index,
+                );
+              },
+              separatorBuilder: (_, _) => const SizedBox(height: 30,),
+              itemCount: playersList.length,
+            ),
           ),
         ],
       ),

@@ -10,6 +10,7 @@ class HomeLayoutScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Center(child: Text('وقت التنطيط'))),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       body: Consumer(
         builder: (context, ref, child) {
           final controller = ref.read(bottomNavProvider.notifier);
@@ -55,7 +56,7 @@ class HomeLayoutScreen extends StatelessWidget {
               return BottomNavigationBar(
                 currentIndex: currentIndex,
                 onTap: controller.changeIndex,
-                
+
                 items: const [
                   BottomNavigationBarItem(
                     icon: Icon(Icons.sports_gymnastics_outlined),

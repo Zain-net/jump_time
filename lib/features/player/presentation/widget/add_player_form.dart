@@ -5,6 +5,9 @@ import '../../../../core/extensions/extensions.dart';
 import '../../../../core/presentation/domain/id_generator.dart';
 import '../../../../core/presentation/widget/custom_form_field.dart';
 import '../../../../core/presentation/widget/iconed_button.dart';
+import '../../../notification/domain/entities/message_type.dart';
+import '../../../notification/domain/entities/snackbar_params.dart';
+import '../../../notification/presentation/service/notification_service.dart';
 import '../../domain/entities/player_entity.dart';
 import '../controller/player_controller.dart';
 import 'keep_screen_switch.dart';
@@ -71,7 +74,16 @@ class _AddPlayerFormState extends State<AddPlayerForm>
 
     controller.addPlayer(player);
     controller.startPlaying(player);
+    
+    NotificationService.showMessage(
+      SnackBarParams(
+        msg: 'تم إضافة ${player.name} للعبة',
+        type: MessageType.success,
+      ),
+    );
 
+    formKey.currentState?.reset();
+    
     final isKeepScreenOn = ref.read(keepScreenProvider);
     if (isKeepScreenOn) return;
 
