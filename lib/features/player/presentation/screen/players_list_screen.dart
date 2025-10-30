@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../controller/player_controller.dart';
 import '../widget/add_player_button.dart';
 import '../widget/nothing_players.dart';
-import '../widget/player_card.dart';
+import '../widget/player_card/player_card.dart';
 
 class PlayersListScreen extends ConsumerWidget {
   const PlayersListScreen({super.key});
@@ -16,7 +16,9 @@ class PlayersListScreen extends ConsumerWidget {
 
     if (isPlayersEmpty) return const NothingPlayers();
 
-    final playersList = ref.watch(playerProvider).players;
+    final playersCount = ref.watch(
+      playerProvider.select((state) => state.players.length),
+    );
 
     return Padding(
       padding: const EdgeInsets.all(24),
@@ -28,15 +30,16 @@ class PlayersListScreen extends ConsumerWidget {
           Expanded(
             child: ListView.separated(
               itemBuilder: (_, index) {
-                final player = playersList.elementAt(index);
-                return PlayerCard(
-                  key: ValueKey('${player.id}: ${player.name}'),
-                  playerEntity: player,
-                  index: index,
-                );
+                final playerId = ref
+                    .read(playerProvider)
+                    .players
+                    .values
+                    .elementAt(index)
+                    .id;
+                return PlayerCard(playerId);
               },
-              separatorBuilder: (_, _) => const SizedBox(height: 30,),
-              itemCount: playersList.length,
+              separatorBuilder: (_, _) => const SizedBox(height: 50),
+              itemCount: playersCount,
             ),
           ),
         ],

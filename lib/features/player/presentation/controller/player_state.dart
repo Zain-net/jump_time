@@ -7,11 +7,11 @@ class PlayerState {
     return PlayerState(readyPlayer: PlayerEntity.empty(), players: {});
   }
 
-  final Set<PlayerEntity> players;
+  final Map<int,PlayerEntity> players;
   final PlayerEntity readyPlayer;
 
   PlayerState copyWith({
-    Set<PlayerEntity>? players,
+    Map<int, PlayerEntity>? players,
     PlayerEntity? readyPlayer,
   }) {
     return PlayerState(

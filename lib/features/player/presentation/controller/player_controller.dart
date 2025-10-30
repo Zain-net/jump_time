@@ -13,6 +13,23 @@ class PlayerNotifier extends StateNotifier<PlayerState> {
 
   final Ref ref;
 
+  void addPlayer(PlayerEntity player) {
+    final copiedPlayers = {...state.players};
+    copiedPlayers.update(player.id, (p)=> player,ifAbsent: () => player,);
+    state = state.copyWith(players: copiedPlayers);
+  }
+
+  void startPlaying(PlayerEntity player) {
+    addPlayer(player);
+
+    final updatedPlayer = player.copyWith(
+      playingPrice: _calculatePlayingPrice(player),
+      remainigTime: _calculateRemainigTime(player),
+    );
+
+    ref.read(playerTimerProvider.notifier).startTimer(updatedPlayer);
+  }
+
   void changePlayingMethod(PlayingMethod playingMethod) {
     if (playingMethod == state.readyPlayer.playingMethod) return;
 
@@ -42,24 +59,7 @@ class PlayerNotifier extends StateNotifier<PlayerState> {
     state = state.copyWith(readyPlayer: newPlayer);
   }
 
-  void addPlayer(PlayerEntity player) {
-    final copiedPlayers = {...state.players};
-    copiedPlayers.remove(player);
-    copiedPlayers.add(player);
-    state = state.copyWith(players: copiedPlayers);
-  }
-
-  void startPlaying(PlayerEntity player) {
-    addPlayer(player);
-
-    final updatedPlayer = player.copyWith(
-      playingPrice: _calculatePlayingPrice(player),
-      remainigTime: _calculateRemainigTime(player),
-    );
-
-
-    ref.read(playerTimerProvider.notifier).startTimer(updatedPlayer);
-  }
+ 
 
   int? _calculatePlayingPrice(PlayerEntity player) {
     final minutePrice = ref.read(minutePriceProvider);

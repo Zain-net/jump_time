@@ -17,23 +17,23 @@ class PlayerTimerNotifier extends StateNotifier<Map<int, Timer>> {
     if (state.containsKey(player.id)) return;
 
     final timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      final players = ref.watch(playerProvider).players;
+      final players = ref.read(playerProvider).players;
 
-      final currentPlayer = players.firstWhere(
-        (p) => p.id == player.id,
-        orElse: () => player,
-      );
+      final currentPlayer = players[player.id] ?? player;
 
       final remainig = currentPlayer.remainigTime;
       if (currentPlayer.playingMethod != PlayingMethod.unlimited &&
           remainig != null &&
           remainig.inSeconds <= 0) {
-        stopTimer(player.id);
+        stopTimer(player);
+
         return;
       }
 
       final updatedPlayer = currentPlayer.copyWith(
-        remainigTime: _decreaseSecond(currentPlayer.remainigTime!),
+        remainigTime: currentPlayer.playingMethod == PlayingMethod.unlimited
+            ? null
+            : _decreaseSecond(currentPlayer.remainigTime!),
         elapsedTime: _increaseSecond(currentPlayer.elapsedTime),
       );
 
@@ -54,13 +54,30 @@ class PlayerTimerNotifier extends StateNotifier<Map<int, Timer>> {
     return Duration(seconds: duration.inSeconds + 1);
   }
 
-  void stopTimer(int playerId) {
+  void stopTimer(PlayerEntity currentPlayer) {
     final copiedTimers = {...state};
-    copiedTimers[playerId]?.cancel();
+    copiedTimers[currentPlayer.id]?.cancel();
 
-    copiedTimers.remove(playerId);
+    copiedTimers.remove(currentPlayer.id);
+
+    ref
+        .read(playerProvider.notifier)
+        .addPlayer(
+          currentPlayer.copyWith(
+            playerState: PlayerStatus.finished,
+            remainigTime: Duration.zero,
+          ),
+        );
 
     state = copiedTimers;
+  }
+
+  @override
+  void dispose() {
+    for (final timer in state.values) {
+      timer.cancel();
+    }
+    super.dispose();
   }
 }
 

@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/presentation/widget/custom_form_field.dart';
 import '../../domain/entities/playing_method.dart';
+import '../controller/player_controller.dart';
 import '../validators/validators.dart';
 import 'custom_tab.dart';
 
-class PlayingStyleForm extends StatefulWidget {
-  const PlayingStyleForm({
+class PlayingMethodForm extends StatefulWidget {
+  const PlayingMethodForm({
     super.key,
     required this.tabController,
     required this.formKey,
@@ -20,10 +21,10 @@ class PlayingStyleForm extends StatefulWidget {
   final TextEditingController playingMoneyController;
 
   @override
-  State<PlayingStyleForm> createState() => _PlayingStyleFormState();
+  State<PlayingMethodForm> createState() => _PlayingMethodFormState();
 }
 
-class _PlayingStyleFormState extends State<PlayingStyleForm> {
+class _PlayingMethodFormState extends State<PlayingMethodForm> {
   int get currentTab => widget.tabController.index;
 
   @override
@@ -34,6 +35,15 @@ class _PlayingStyleFormState extends State<PlayingStyleForm> {
       children: [
         Consumer(
           builder: (_, ref, __) {
+            final tabRecentIndex = ref.watch(
+              playerProvider.select(
+                (state) => state.readyPlayer.playingMethod.index,
+              ),
+            );
+            if (currentTab != tabRecentIndex) {
+              widget.tabController.animateTo(tabRecentIndex);
+            }
+            
             final tabs = PlayingMethod.values
                 .map(
                   (method) => CustomTab(

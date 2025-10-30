@@ -11,7 +11,7 @@ import '../../domain/entities/player_entity.dart';
 import '../../domain/entities/playing_method.dart';
 import '../controller/player_controller.dart';
 import 'keep_screen_switch.dart';
-import 'playing_style_form.dart';
+import 'playing_method_form.dart';
 
 class AddPlayerForm extends StatefulWidget {
   const AddPlayerForm({super.key});
@@ -106,7 +106,7 @@ class _AddPlayerFormState extends State<AddPlayerForm>
             },
           ),
 
-          PlayingStyleForm(
+          PlayingMethodForm(
             formKey: formKey,
             playingMoneyController: playingMoneyController,
             playingTimeController: playingTimeController,
