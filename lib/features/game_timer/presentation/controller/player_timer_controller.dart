@@ -25,21 +25,17 @@ class PlayerTimerNotifier extends StateNotifier<Map<int, Timer>> {
       );
 
       final remainig = currentPlayer.remainigTime;
-      if (remainig != null && remainig.inSeconds <= 0) {
+      if (currentPlayer.playingMethod != PlayingMethod.unlimited &&
+          remainig != null &&
+          remainig.inSeconds <= 0) {
         stopTimer(player.id);
         return;
       }
 
-      print(currentPlayer);
-      final updatedPlayer = switch (currentPlayer.playingMethod) {
-        PlayingMethod.time => currentPlayer.copyWith(
-          remainigTime: _decreaseSecond(currentPlayer.remainigTime!),
-        ),
-        PlayingMethod.money => currentPlayer,
-        PlayingMethod.unlimited => currentPlayer.copyWith(
-          remainigTime: _increaseSecond(currentPlayer.remainigTime!),
-        ),
-      };
+      final updatedPlayer = currentPlayer.copyWith(
+        remainigTime: _decreaseSecond(currentPlayer.remainigTime!),
+        elapsedTime: _increaseSecond(currentPlayer.elapsedTime),
+      );
 
       ref.read(playerProvider.notifier).addPlayer(updatedPlayer);
     });

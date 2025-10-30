@@ -57,7 +57,6 @@ class PlayerNotifier extends StateNotifier<PlayerState> {
       remainigTime: _calculateRemainigTime(player),
     );
 
-    print(updatedPlayer);
 
     ref.read(playerTimerProvider.notifier).startTimer(updatedPlayer);
   }

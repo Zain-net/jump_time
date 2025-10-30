@@ -76,6 +76,19 @@ class PlayerCard extends StatelessWidget {
             );
           },
         ),
+        Consumer(
+          builder: (_, ref, __) {
+            final elapsedTime = ref.watch(
+              playerProvider.select(
+                (state) => state.players.elementAt(index).elapsedTime,
+              ),
+            );
+            return PlayerRawInfo(
+              label: 'الوقت المنقضي',
+              value: elapsedTime.format,
+            );
+          },
+        ),
       ],
     );
   }

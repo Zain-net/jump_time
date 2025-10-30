@@ -73,7 +73,7 @@ class _AddPlayerFormState extends State<AddPlayerForm>
     );
 
     controller.startPlaying(player);
-    
+
     NotificationService.showMessage(
       SnackBarParams(
         msg: 'تم إضافة ${player.name} للعبة',

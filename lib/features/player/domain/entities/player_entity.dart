@@ -10,6 +10,7 @@ class PlayerEntity extends Equatable {
     required this.playerPhoto,
     required this.playingMethod,
     required this.playerStatus,
+    this.elapsedTime = Duration.zero,
     this.playingPrice,
     this.remainigTime,
   });
@@ -31,6 +32,7 @@ class PlayerEntity extends Equatable {
   final PlayerStatus playerStatus;
   final int? playingPrice;
   final Duration? remainigTime;
+  final Duration elapsedTime;
 
   PlayerEntity copyWith({
     int? id,
@@ -40,6 +42,7 @@ class PlayerEntity extends Equatable {
     PlayerStatus? playerState,
     int? playingPrice,
     Duration? remainigTime,
+    Duration? elapsedTime,
   }) {
     return PlayerEntity(
       id: id ?? this.id,
@@ -49,6 +52,7 @@ class PlayerEntity extends Equatable {
       playerStatus: playerState ?? playerStatus,
       playingPrice: playingPrice ?? this.playingPrice,
       remainigTime: remainigTime ?? this.remainigTime,
+      elapsedTime: elapsedTime ?? this.elapsedTime,
     );
   }
 
@@ -61,6 +65,7 @@ class PlayerEntity extends Equatable {
         'playerStatus: $playerStatus, \n'
         'playingPrice: $playingPrice, \n'
         'remainigTime: $remainigTime, \n'
+        'elapsedTime: $elapsedTime, \n'
         'playerPhoto: $playerPhoto \n'
         ')';
   }
