@@ -24,7 +24,7 @@ class PlayerCard extends ConsumerWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       spacing: 20,
       children: [
-        PlayerCardHeader(playerId: playerId),
+         PlayerCardHeader(playerId: playerId),
 
         Consumer(
           builder: (context, ref, child) {

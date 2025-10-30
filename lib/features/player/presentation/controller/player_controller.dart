@@ -15,7 +15,7 @@ class PlayerNotifier extends StateNotifier<PlayerState> {
 
   void addPlayer(PlayerEntity player) {
     final copiedPlayers = {...state.players};
-    copiedPlayers.update(player.id, (p)=> player,ifAbsent: () => player,);
+    copiedPlayers.update(player.id, (p) => player, ifAbsent: () => player);
     state = state.copyWith(players: copiedPlayers);
   }
 
@@ -58,8 +58,6 @@ class PlayerNotifier extends StateNotifier<PlayerState> {
 
     state = state.copyWith(readyPlayer: newPlayer);
   }
-
- 
 
   int? _calculatePlayingPrice(PlayerEntity player) {
     final minutePrice = ref.read(minutePriceProvider);
