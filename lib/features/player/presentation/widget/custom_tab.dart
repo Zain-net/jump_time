@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../core/enums/enums.dart';
 import '../../../../core/presentation/widget/iconed_button.dart';
+import '../../domain/entities/playing_method.dart';
 import '../controller/player_controller.dart';
 
 class CustomTab extends ConsumerWidget {

@@ -2,8 +2,9 @@ import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/legacy.dart';
 
-import '../../../../core/enums/enums.dart';
 import '../../../player/domain/entities/player_entity.dart';
+import '../../../player/domain/entities/player_status.dart';
+import '../../../player/domain/entities/playing_method.dart';
 import '../../../player/presentation/controller/player_controller.dart';
 
 class PlayerTimerNotifier extends StateNotifier<Map<int, Timer>> {
@@ -16,7 +17,7 @@ class PlayerTimerNotifier extends StateNotifier<Map<int, Timer>> {
     if (state.containsKey(player.id)) return;
 
     final timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      final players = ref.read(playerProvider).players;
+      final players = ref.watch(playerProvider).players;
 
       final currentPlayer = players.firstWhere(
         (p) => p.id == player.id,
@@ -29,6 +30,7 @@ class PlayerTimerNotifier extends StateNotifier<Map<int, Timer>> {
         return;
       }
 
+      print(currentPlayer);
       final updatedPlayer = switch (currentPlayer.playingMethod) {
         PlayingMethod.time => currentPlayer.copyWith(
           remainigTime: _decreaseSecond(currentPlayer.remainigTime!),
@@ -42,7 +44,10 @@ class PlayerTimerNotifier extends StateNotifier<Map<int, Timer>> {
       ref.read(playerProvider.notifier).addPlayer(updatedPlayer);
     });
 
-    state = {...state, player.id: timer};
+    final updatedPlayer = player.copyWith(playerState: PlayerStatus.playing);
+    ref.read(playerProvider.notifier).addPlayer(updatedPlayer);
+
+    state = {...state, updatedPlayer.id: timer};
   }
 
   Duration _decreaseSecond(Duration duration) {

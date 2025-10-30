@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../../../core/enums/enums.dart';
 import '../../../../core/extensions/extensions.dart';
 import '../../../../core/presentation/domain/id_generator.dart';
 import '../../../../core/presentation/widget/custom_form_field.dart';
@@ -9,6 +8,7 @@ import '../../../notification/domain/entities/message_type.dart';
 import '../../../notification/domain/entities/snackbar_params.dart';
 import '../../../notification/presentation/service/notification_service.dart';
 import '../../domain/entities/player_entity.dart';
+import '../../domain/entities/playing_method.dart';
 import '../controller/player_controller.dart';
 import 'keep_screen_switch.dart';
 import 'playing_style_form.dart';
@@ -72,7 +72,6 @@ class _AddPlayerFormState extends State<AddPlayerForm>
       remainigTime: remainigTime,
     );
 
-    controller.addPlayer(player);
     controller.startPlaying(player);
     
     NotificationService.showMessage(
@@ -82,8 +81,9 @@ class _AddPlayerFormState extends State<AddPlayerForm>
       ),
     );
 
+    controller.changePhotoToAsset();
     formKey.currentState?.reset();
-    
+
     final isKeepScreenOn = ref.read(keepScreenProvider);
     if (isKeepScreenOn) return;
 

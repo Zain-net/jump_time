@@ -1,5 +1,5 @@
-import '../../../../core/enums/enums.dart';
 import '../../../../core/extensions/extensions.dart';
+import '../../domain/entities/playing_method.dart';
 
 String? validateEmptyNumbers({
   required String? value,

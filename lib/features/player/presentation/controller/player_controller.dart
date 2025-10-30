@@ -1,11 +1,11 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/legacy.dart';
 
-import '../../../../core/enums/enums.dart';
 import '../../../game_timer/presentation/controller/player_timer_controller.dart';
 import '../../../game_timer/presentation/controller/remainig_time_price.dart';
 import '../../domain/entities/player_entity.dart';
 import '../../domain/entities/player_photo.dart';
+import '../../domain/entities/playing_method.dart';
 import 'player_state.dart';
 
 class PlayerNotifier extends StateNotifier<PlayerState> {
@@ -31,6 +31,17 @@ class PlayerNotifier extends StateNotifier<PlayerState> {
     state = state.copyWith(readyPlayer: readyPlayer);
   }
 
+  void changePhotoToAsset() {
+    final currentPhoto = state.readyPlayer.playerPhoto;
+    if (currentPhoto.isDefaultPhoto) return;
+
+    final newPlayer = state.readyPlayer.copyWith(
+      playerPhoto: PlayerPhoto.asset(),
+    );
+
+    state = state.copyWith(readyPlayer: newPlayer);
+  }
+
   void addPlayer(PlayerEntity player) {
     final copiedPlayers = {...state.players};
     copiedPlayers.remove(player);
@@ -39,10 +50,14 @@ class PlayerNotifier extends StateNotifier<PlayerState> {
   }
 
   void startPlaying(PlayerEntity player) {
+    addPlayer(player);
+
     final updatedPlayer = player.copyWith(
       playingPrice: _calculatePlayingPrice(player),
       remainigTime: _calculateRemainigTime(player),
     );
+
+    print(updatedPlayer);
 
     ref.read(playerTimerProvider.notifier).startTimer(updatedPlayer);
   }

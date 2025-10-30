@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
-import '../../../../core/enums/enums.dart';
 import 'player_photo.dart';
+import 'player_status.dart';
+import 'playing_method.dart';
 
 class PlayerEntity extends Equatable {
   const PlayerEntity({
@@ -14,12 +15,12 @@ class PlayerEntity extends Equatable {
   });
 
   factory PlayerEntity.empty() {
-    return const PlayerEntity(
+    return PlayerEntity(
       name: '',
       id: 0,
-      playerPhoto: PlayerPhoto(photoSource: PlayerPhotoSource.asset),
+      playerPhoto: PlayerPhoto.asset(),
       playingMethod: PlayingMethod.money,
-      playerStatus: PlayerStatus.finished,
+      playerStatus: PlayerStatus.waiting,
     );
   }
 
@@ -49,6 +50,19 @@ class PlayerEntity extends Equatable {
       playingPrice: playingPrice ?? this.playingPrice,
       remainigTime: remainigTime ?? this.remainigTime,
     );
+  }
+
+  @override
+  String toString() {
+    return 'PlayerEntity( \n'
+        'id: $id, \n'
+        'name: $name, \n'
+        'playingMethod: $playingMethod, \n'
+        'playerStatus: $playerStatus, \n'
+        'playingPrice: $playingPrice, \n'
+        'remainigTime: $remainigTime, \n'
+        'playerPhoto: $playerPhoto \n'
+        ')';
   }
 
   @override

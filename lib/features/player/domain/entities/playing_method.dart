@@ -9,14 +9,3 @@ enum PlayingMethod {
   final String label;
   final Widget icon;
 }
-
-enum PlayerPhotoSource { asset, picked }
-
-enum PlayerStatus {
-  playing('يلعب'),
-  finished('انتهى'),
-  waiting('ينتظر');
-
-  const PlayerStatus(this.status);
-  final String status;
-}

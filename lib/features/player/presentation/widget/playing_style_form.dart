@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../../../core/enums/enums.dart';
 import '../../../../core/presentation/widget/custom_form_field.dart';
+import '../../domain/entities/playing_method.dart';
 import '../validators/validators.dart';
 import 'custom_tab.dart';
 

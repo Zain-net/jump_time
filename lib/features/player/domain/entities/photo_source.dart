@@ -1,0 +1,1 @@
+enum PhotoSource { asset, picked }

@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 
-import '../../../../core/enums/enums.dart';
+import '../../domain/entities/photo_source.dart';
 import '../../domain/entities/player_photo.dart';
 
 class BuildPlayerPhoto extends StatelessWidget {
@@ -12,8 +12,8 @@ class BuildPlayerPhoto extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return switch (playerPhoto.photoSource) {
-      PlayerPhotoSource.asset => const _FallBackImage(),
-      PlayerPhotoSource.picked => _PickedPhoto(playerPhoto.path!),
+      PhotoSource.asset => const _FallBackImage(),
+      PhotoSource.picked => _PickedPhoto(playerPhoto.path!),
     };
   }
 }
