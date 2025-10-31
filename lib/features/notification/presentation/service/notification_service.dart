@@ -4,11 +4,16 @@ import 'package:flutter/material.dart';
 import '../../domain/entities/snackbar_params.dart';
 
 class NotificationService {
+  factory NotificationService() {
+    return _instance;
+  }
   NotificationService._();
 
-  static final navigatorKey = GlobalKey<NavigatorState>();
+  static final _instance = NotificationService._();
 
-  static void showMessage(SnackBarParams params) {
+  final navigatorKey = GlobalKey<NavigatorState>();
+
+  void show(SnackBarParams params) {
     if (navigatorKey.currentContext == null) return;
     if (!navigatorKey.currentContext!.mounted) return;
     CustomSnackbar.show(

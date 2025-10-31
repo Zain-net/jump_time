@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../../core/extensions/extensions.dart';
 import '../../../../../core/presentation/widget/iconed_button.dart';
-import '../../../../game_timer/presentation/controller/player_timer_controller.dart';
 import '../../../domain/entities/playing_method.dart';
 import '../../../domain/entities/time_extend_entity.dart';
 import '../../controller/player_controller.dart';
@@ -109,16 +108,13 @@ class _ExtendTimeFormState extends State<ExtendTimeForm>
                   final player = ref.read(playerProvider).players[playerId];
                   if (player == null) return;
 
-                  final extendParams = TimeExtendEntity(
-                    extendType: ref
-                        .read(playerProvider)
-                        .readyPlayer
-                        .playingMethod,
-                    minutes: playingTimeController.text.toInt ?? 0,
-                    money: playingMoneyController.text.toInt ?? 0,
+                  final extendParams = TimeExtendParams(
+                    minutes: playingTimeController.text.toInt,
+                    money: playingMoneyController.text.toInt,
                   );
 
                   controller.extendPlayerTime(player, extendParams);
+                  
                 },
                 icon: const Icon(Icons.restore_outlined),
                 label: 'تمديد اللعب',

@@ -61,6 +61,8 @@ class PlayerEntity extends Equatable {
     );
   }
 
+
+
   @override
   String toString() {
     return 'PlayerEntity( \n'

@@ -1,13 +1,6 @@
-import 'playing_method.dart';
+class TimeExtendParams {
+  TimeExtendParams({required this.minutes, required this.money});
 
-class TimeExtendEntity {
-  TimeExtendEntity({
-    required this.extendType,
-    required this.minutes,
-    required this.money,
-  });
-
-  final PlayingMethod extendType;
-  final int minutes;
-  final int money;
+  final int? minutes;
+  final int? money;
 }

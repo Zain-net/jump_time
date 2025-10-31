@@ -28,7 +28,7 @@ class CustomMaterialApp extends ConsumerWidget {
       themeMode: ref.watch(themeProvider),
       initialRoute: ViewRoute.home.name,
       routes: AppRoutes.routes,
-      navigatorKey: NotificationService.navigatorKey,
+      navigatorKey: NotificationService().navigatorKey,
     );
   }
 }

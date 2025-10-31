@@ -3,17 +3,21 @@ import 'package:flutter_riverpod/legacy.dart';
 
 import '../../../game_timer/presentation/controller/player_timer_controller.dart';
 import '../../../game_timer/presentation/controller/remainig_time_price.dart';
+import '../../../notification/domain/entities/message_type.dart';
+import '../../../notification/domain/entities/snackbar_params.dart';
+import '../../../notification/presentation/service/notification_service.dart';
 import '../../domain/entities/player_entity.dart';
 import '../../domain/entities/player_photo/player_photo.dart';
 import '../../domain/entities/playing_method.dart';
 import '../../domain/entities/time_extend_entity.dart';
-import '../widget/extend_time/extend_time_form.dart';
 import 'player_state.dart';
 
 class PlayerNotifier extends StateNotifier<PlayerState> {
-  PlayerNotifier(this.ref) : super(PlayerState.empty());
+  PlayerNotifier(this.ref, this.notificationService)
+    : super(PlayerState.empty());
 
   final Ref ref;
+  final NotificationService notificationService;
 
   void addPlayer(PlayerEntity player) {
     final copiedPlayers = {...state.players};
@@ -70,20 +74,42 @@ class PlayerNotifier extends StateNotifier<PlayerState> {
     return player;
   }
 
-  void extendPlayerTime(PlayerEntity player, TimeExtendEntity timeExtend) {
-    final playingMoney = player.playingPrice;
-    final totalDuration = player.totalDuration;
-    final updatedPlayer = switch (player.playingMethod) {
-      PlayingMethod.money => player.copyWith(
-        playingPrice: (playingMoney ?? 0) + timeExtend.minutes,
-        // totalDuration: totalDuration+()
-      ),
+  void extendPlayerTime(PlayerEntity player, TimeExtendParams extendParams) {
+    try {
+      final currentRemaining = player.remainigTime ?? Duration.zero;
+      final additionalDuration = Duration(minutes: extendParams.minutes ?? 0);
+      final newPlayingPrice =
+          (player.playingPrice ?? 0) + (extendParams.money ?? 0);
+      final totalDuration = player.totalDuration + additionalDuration;
+      final newRemaining = currentRemaining + additionalDuration;
 
-      PlayingMethod.time => player.copyWith(
+      final updatedPlayer = player.copyWith(
+        playingPrice: newPlayingPrice,
+        totalDuration: totalDuration,
+        remainigTime: newRemaining,
+      );
 
-      ),
-      PlayingMethod.unlimited => player,
-    };
+      addPlayer(
+        updatedPlayer.copyWith(
+          playingPrice: _calculatePlayingPrice(updatedPlayer),
+          remainigTime: _calculateRemainigTime(updatedPlayer),
+        ),
+      );
+
+      notificationService.show(
+        SnackBarParams(
+          msg: 'تم تمديد فترة اللاعب ${player.name}',
+          type: MessageType.success,
+        ),
+      );
+    } catch (_) {
+      notificationService.show(
+        SnackBarParams(
+          msg: 'حدث خطأ أثناء محاولة تمديد فترة اللاعب ${player.name}',
+          type: MessageType.error,
+        ),
+      );
+    }
   }
 
   int? _calculatePlayingPrice(PlayerEntity player) {
@@ -116,6 +142,10 @@ class PlayerNotifier extends StateNotifier<PlayerState> {
   }
 }
 
+final notificationServiceProvider = Provider<NotificationService>(
+  (ref) => NotificationService(),
+);
+
 final playerProvider = StateNotifierProvider<PlayerNotifier, PlayerState>(
-  PlayerNotifier.new,
+  (ref) => PlayerNotifier(ref, ref.watch(notificationServiceProvider)),
 );
