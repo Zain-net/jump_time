@@ -59,6 +59,19 @@ class PlayerNotifier extends StateNotifier<PlayerState> {
     state = state.copyWith(readyPlayer: newPlayer);
   }
 
+  PlayerEntity? deletePlayer(int playerId) {
+    final copiedPlayers = {...state.players};
+    final player = copiedPlayers.remove(playerId);
+
+    state = state.copyWith(players: copiedPlayers);
+
+    return player;
+  }
+
+  void extendPlayerTime(int playerId){
+    
+  }
+
   int? _calculatePlayingPrice(PlayerEntity player) {
     final minutePrice = ref.read(minutePriceProvider);
     if (player.remainigTime == null &&

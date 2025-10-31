@@ -15,13 +15,13 @@ class BuildRemainingTime extends StatelessWidget {
       builder: (_, ref, __) {
         final remainingTime = ref.watch(
           playerProvider.select(
-            (state) => state.players[playerId]?.remainigTime,
+            (state) => state.players[playerId]?.remainigTime ?? Duration.zero,
           ),
         );
 
         return PlayerRawInfo(
           label: 'الوقت المتبقي',
-          value: remainingTime!.format,
+          value: remainingTime.format,
         );
       },
     );

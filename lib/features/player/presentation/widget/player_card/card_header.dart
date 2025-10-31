@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../core/presentation/widget/iconed_button.dart';
+import '../../../../../core/routes/app_routes.dart';
 import '../../../domain/entities/player_photo.dart';
 import '../../controller/player_controller.dart';
 import '../build_player_photo.dart';
@@ -37,7 +38,10 @@ class PlayerCardHeader extends StatelessWidget {
 
               child: IconedButton(
                 onPressed: () {
-                  // TODO: Go to Manage Player Screen
+                  Navigator.of(context).pushNamed(
+                    ViewRoute.playerManagement.routeName,
+                    arguments: playerId,
+                  );
                 },
                 label: 'إدارة',
                 icon: const Icon(Icons.manage_accounts),

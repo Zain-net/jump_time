@@ -23,7 +23,7 @@ ThemeData lightThemeData() {
       centerTitle: true,
       backgroundColor: Colors.white,
       surfaceTintColor: Colors.white,
-      actionsPadding: EdgeInsets.symmetric(horizontal: 11)
+      actionsPadding: EdgeInsets.symmetric(horizontal: 11),
     ),
 
     elevatedButtonTheme: ElevatedButtonThemeData(
@@ -39,6 +39,12 @@ ThemeData lightThemeData() {
 
     iconTheme: const IconThemeData(size: 50),
 
+    progressIndicatorTheme: ProgressIndicatorThemeData(
+      linearTrackColor: const Color(0xFFDBE1E6),
+      color: const Color(0xFF111518),
+      borderRadius: BorderRadius.circular(30),
+      strokeWidth: 5
+    ),
 
     inputDecorationTheme: InputDecorationTheme(
       fillColor: const Color(0xFFE7EEF4).withOpacity(.5),

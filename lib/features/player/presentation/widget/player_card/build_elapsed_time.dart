@@ -8,20 +8,17 @@ import 'player_raw_info.dart';
 class BuildElapsedTime extends StatelessWidget {
   const BuildElapsedTime(this.playerId, {super.key});
   final int playerId;
-  
+
   @override
   Widget build(BuildContext context) {
     return Consumer(
       builder: (_, ref, __) {
         final elapsedTime = ref.watch(
           playerProvider.select(
-            (state) => state.players[playerId]?.elapsedTime,
+            (state) => state.players[playerId]?.elapsedTime ?? Duration.zero,
           ),
         );
-        return PlayerRawInfo(
-          label: 'الوقت المنقضي',
-          value: elapsedTime?.format ?? '00:00:00',
-        );
+        return PlayerRawInfo(label: 'الوقت المنقضي', value: elapsedTime.format);
       },
     );
   }

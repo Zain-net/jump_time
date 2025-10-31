@@ -13,9 +13,6 @@ class PlayerTimerNotifier extends StateNotifier<Map<int, Timer>> {
   final Ref ref;
 
   void startTimer(PlayerEntity player) {
-    // إذا كان اللاعب لديه تايمر بالفعل، لا تنشئ واحد جديد
-    if (state.containsKey(player.id)) return;
-
     final timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       final players = ref.read(playerProvider).players;
 
@@ -25,7 +22,7 @@ class PlayerTimerNotifier extends StateNotifier<Map<int, Timer>> {
       if (currentPlayer.playingMethod != PlayingMethod.unlimited &&
           remainig != null &&
           remainig.inSeconds <= 0) {
-        stopTimer(player);
+        stopPlayerTimer(player.id);
 
         return;
       }
@@ -43,22 +40,42 @@ class PlayerTimerNotifier extends StateNotifier<Map<int, Timer>> {
     final updatedPlayer = player.copyWith(playerState: PlayerStatus.playing);
     ref.read(playerProvider.notifier).addPlayer(updatedPlayer);
 
-    state = {...state, updatedPlayer.id: timer};
+    final copiedPlayersTimers = {...state};
+
+    copiedPlayersTimers.update(
+      updatedPlayer.id,
+      (_) => timer,
+      ifAbsent: () => timer,
+    );
+    state = copiedPlayersTimers;
   }
 
-  Duration _decreaseSecond(Duration duration) {
-    return Duration(seconds: duration.inSeconds - 1);
+  void pauseResumePlayer(int playerId) {
+    final playerTimer = state[playerId];
+
+    if (playerTimer?.isActive ?? false) {
+      playerTimer?.cancel();
+      return;
+    }
+
+    final players = ref.read(playerProvider).players;
+
+    final currentPlayer = players[playerId];
+    if (currentPlayer == null) return;
+    startTimer(currentPlayer);
   }
 
-  Duration _increaseSecond(Duration duration) {
-    return Duration(seconds: duration.inSeconds + 1);
-  }
-
-  void stopTimer(PlayerEntity currentPlayer) {
+  void stopPlayerTimer(int playerId) {
     final copiedTimers = {...state};
-    copiedTimers[currentPlayer.id]?.cancel();
+    copiedTimers[playerId]?.cancel();
 
-    copiedTimers.remove(currentPlayer.id);
+    copiedTimers.remove(playerId);
+
+    final players = ref.read(playerProvider).players;
+
+    final currentPlayer = players[playerId];
+
+    if (currentPlayer == null) return;
 
     ref
         .read(playerProvider.notifier)
@@ -70,6 +87,14 @@ class PlayerTimerNotifier extends StateNotifier<Map<int, Timer>> {
         );
 
     state = copiedTimers;
+  }
+
+  Duration _decreaseSecond(Duration duration) {
+    return Duration(seconds: duration.inSeconds - 1);
+  }
+
+  Duration _increaseSecond(Duration duration) {
+    return Duration(seconds: duration.inSeconds + 1);
   }
 
   @override

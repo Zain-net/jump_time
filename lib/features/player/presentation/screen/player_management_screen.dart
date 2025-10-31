@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/extensions/extensions.dart';
 import '../../../../core/presentation/widget/iconed_button.dart';
+import '../../../../core/routes/app_routes.dart';
+import '../../../game_timer/presentation/controller/player_timer_controller.dart';
 import '../controller/player_controller.dart';
 import '../widget/player_manage/player_avatar.dart';
 
@@ -77,11 +79,14 @@ class PlayerManagementScreen extends StatelessWidget {
                           value:
                               remainingTime.inMilliseconds /
                               totalDuration.inMilliseconds,
-                          backgroundColor: const Color(0xACE0E0E0),
-                          color: const Color(0xFF1C1D1E),
                         ),
 
-                        Text(remainingTime.format),
+                        Text(
+                          remainingTime.format,
+                          style: context.textTheme.labelSmall?.copyWith(
+                            color: Colors.grey[400],
+                          ),
+                        ),
                       ],
                     );
                   },
@@ -92,26 +97,57 @@ class PlayerManagementScreen extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                IconedButton(
-                  label: 'ايقاف مؤقت',
-                  icon: const Icon(Icons.pause),
-                  onPressed: () {
-                    // TODO: Pause Time Playing of the player
+                Consumer(
+                  builder: (context, ref, child) {
+                    final isResumed = ref.watch(
+                      playerTimerProvider.select(
+                        (state) => state[playerId]?.isActive,
+                      ),
+                    );
+
+                    if (isResumed == null) return const SizedBox.shrink();
+
+                    return IconedButton(
+                      label: isResumed ? 'استئناف' : 'ايقاف مؤقت',
+                      icon: Icon(isResumed ? Icons.play_arrow : Icons.pause),
+                      onPressed: () {
+                        final controller = ref.read(
+                          playerTimerProvider.notifier,
+                        );
+
+                        controller.pauseResumePlayer(playerId);
+                      },
+                    );
                   },
                 ),
-                IconedButton(
-                  label: 'إنهاء',
-                  icon: const Icon(Icons.pause),
-                  onPressed: () {
-                    // TODO: Finish Playing Time
+
+                Consumer(
+                  builder: (context, ref, child) {
+                    return IconedButton(
+                      label: 'إنهاء',
+                      icon: const Icon(Icons.close_rounded),
+                      onPressed: () {
+                        final controller = ref.read(
+                          playerTimerProvider.notifier,
+                        );
+
+                        controller.stopPlayerTimer(playerId);
+                      },
+                    );
                   },
                 ),
               ],
             ),
 
-            const IconedButton(
+            IconedButton(
               label: 'تمديد فترة اللعب',
-              icon: Icon(Icons.restore),
+              icon: const Icon(Icons.restore),
+              onPressed: () {
+                Navigator.of(context).pushNamed(
+                  ViewRoute.extendTime.routeName,
+                  arguments: playerId,
+                );
+              },
             ),
           ],
         ),
