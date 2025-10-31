@@ -2,8 +2,8 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 
-import '../../domain/entities/photo_source.dart';
-import '../../domain/entities/player_photo.dart';
+import '../../domain/entities/player_photo/photo_source.dart';
+import '../../domain/entities/player_photo/player_photo.dart';
 
 class BuildPlayerPhoto extends StatelessWidget {
   const BuildPlayerPhoto(this.playerPhoto, {super.key});

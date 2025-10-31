@@ -25,6 +25,7 @@ class CustomTab extends ConsumerWidget {
     return IconedButton(
       label: playingMethod.label,
       icon: playingMethod.icon,
+      borderRadius: 30,
       onPressed: () {
         tabController.animateTo(tabIndex);
 

@@ -4,8 +4,10 @@ import 'package:flutter_riverpod/legacy.dart';
 import '../../../game_timer/presentation/controller/player_timer_controller.dart';
 import '../../../game_timer/presentation/controller/remainig_time_price.dart';
 import '../../domain/entities/player_entity.dart';
-import '../../domain/entities/player_photo.dart';
+import '../../domain/entities/player_photo/player_photo.dart';
 import '../../domain/entities/playing_method.dart';
+import '../../domain/entities/time_extend_entity.dart';
+import '../widget/extend_time/extend_time_form.dart';
 import 'player_state.dart';
 
 class PlayerNotifier extends StateNotifier<PlayerState> {
@@ -68,8 +70,20 @@ class PlayerNotifier extends StateNotifier<PlayerState> {
     return player;
   }
 
-  void extendPlayerTime(int playerId){
-    
+  void extendPlayerTime(PlayerEntity player, TimeExtendEntity timeExtend) {
+    final playingMoney = player.playingPrice;
+    final totalDuration = player.totalDuration;
+    final updatedPlayer = switch (player.playingMethod) {
+      PlayingMethod.money => player.copyWith(
+        playingPrice: (playingMoney ?? 0) + timeExtend.minutes,
+        // totalDuration: totalDuration+()
+      ),
+
+      PlayingMethod.time => player.copyWith(
+
+      ),
+      PlayingMethod.unlimited => player,
+    };
   }
 
   int? _calculatePlayingPrice(PlayerEntity player) {

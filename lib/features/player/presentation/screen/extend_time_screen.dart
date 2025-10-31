@@ -15,6 +15,7 @@ class ExtendTimeScreen extends StatelessWidget {
             '?كيف تود أن يتم تمديد فترة اللاعب',
             style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           ),
+          
         ],
       ),
     );

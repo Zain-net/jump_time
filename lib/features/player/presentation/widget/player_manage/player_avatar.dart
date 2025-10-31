@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../core/presentation/widget/conditional_builder.dart';
-import '../../../domain/entities/photo_source.dart';
-import '../../../domain/entities/player_photo.dart';
+import '../../../domain/entities/player_photo/photo_source.dart';
+import '../../../domain/entities/player_photo/player_photo.dart';
 import '../../helpers/helpers.dart';
 
 class PlayerAvatar extends ConsumerWidget {

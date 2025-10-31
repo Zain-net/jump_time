@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../widget/add_player_form.dart';
+import '../widget/forms/add_player_form.dart';
 import '../widget/keep_screen_switch.dart';
 import '../widget/player_photo_controller.dart';
 

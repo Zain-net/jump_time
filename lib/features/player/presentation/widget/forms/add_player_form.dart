@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../../../core/extensions/extensions.dart';
-import '../../../../core/presentation/domain/id_generator.dart';
-import '../../../../core/presentation/widget/custom_form_field.dart';
-import '../../../../core/presentation/widget/iconed_button.dart';
-import '../../../notification/domain/entities/message_type.dart';
-import '../../../notification/domain/entities/snackbar_params.dart';
-import '../../../notification/presentation/service/notification_service.dart';
-import '../../domain/entities/player_entity.dart';
-import '../../domain/entities/playing_method.dart';
-import '../controller/player_controller.dart';
-import 'keep_screen_switch.dart';
+import '../../../../../core/extensions/extensions.dart';
+import '../../../../../core/presentation/domain/id_generator.dart';
+import '../../../../../core/presentation/widget/custom_form_field.dart';
+import '../../../../../core/presentation/widget/iconed_button.dart';
+import '../../../../notification/domain/entities/message_type.dart';
+import '../../../../notification/domain/entities/snackbar_params.dart';
+import '../../../../notification/presentation/service/notification_service.dart';
+import '../../../domain/entities/player_entity.dart';
+import '../../../domain/entities/playing_method.dart';
+import '../../controller/player_controller.dart';
+import '../keep_screen_switch.dart';
 import 'playing_method_form.dart';
 
 class AddPlayerForm extends StatefulWidget {
@@ -49,12 +49,11 @@ class _AddPlayerFormState extends State<AddPlayerForm>
   }
 
   void _submitForm(WidgetRef ref) {
-    final controller = ref.read(playerProvider.notifier);
-
     final isValidForm = formKey.currentState?.validate() ?? false;
 
     if (!isValidForm) return;
 
+    final controller = ref.read(playerProvider.notifier);
     final readyPlayer = ref.read(playerProvider).readyPlayer;
 
     final remainigMinutes = playingTimeController.text.toInt;

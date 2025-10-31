@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../core/presentation/widget/iconed_button.dart';
 import '../../../../../core/routes/app_routes.dart';
-import '../../../domain/entities/player_photo.dart';
+import '../../../domain/entities/player_photo/player_photo.dart';
 import '../../controller/player_controller.dart';
 import '../build_player_photo.dart';
 

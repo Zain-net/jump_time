@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'player_photo.dart';
+import 'player_photo/player_photo.dart';
 import 'player_status.dart';
 import 'playing_method.dart';
 

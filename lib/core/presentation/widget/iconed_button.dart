@@ -7,7 +7,7 @@ class IconedButton extends StatelessWidget {
     required this.label,
     required this.icon,
     this.backgroundColor,
-    this.foregroundColor,
+    this.foregroundColor, this.borderRadius,
   });
 
   final VoidCallback? onPressed;
@@ -15,15 +15,17 @@ class IconedButton extends StatelessWidget {
   final Widget icon;
   final Color? backgroundColor;
   final Color? foregroundColor;
+  final double? borderRadius;
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-      onPressed: ()=> onPressed?.call(),
+      onPressed: () => onPressed?.call(),
 
       style: ElevatedButton.styleFrom(
         backgroundColor: backgroundColor,
         foregroundColor: foregroundColor,
+        shape: borderRadius!=null?  RoundedRectangleBorder(borderRadius: BorderRadius.circular(borderRadius!)): null,
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
